@@ -2,6 +2,9 @@ package main
 
 import "fmt"
 
+var peter string
+
 func main() {
-	fmt.Println("Hello World!")
+	peter := "doch nicht PETER MUHAHAHA!!"
+	fmt.Printf("Hello World! My name is %s\n", peter)
 }
