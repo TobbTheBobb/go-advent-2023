@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-var re = regexp.MustCompile(`one|two|three|four|five|six|seven|eight|nine|\d`)
+var re = regexp.MustCompile(`oneight|threeight|fiveight|nineight|sevenine|twone|one|two|three|four|five|six|seven|eight|nine|\d`)
 
 func main() {
 	myInput_Structure := readFile()
@@ -32,9 +32,45 @@ func readFile() []string {
 	return myInput_Structure
 }
 
-func convertToInt(s string) string {
+func convertToInt(s string,f bool) string {
 	var value string
 	switch s {
+	case "twone":
+		if (f) {
+			value = "2"
+		} else {
+			value = "1"
+		}
+	case "oneight":
+		if (f) {
+			value = "1"
+		} else {
+			value = "8"
+		}
+	case "threeight":
+		if (f) {
+			value = "3"
+		} else {
+			value = "8"
+		}
+	case "fiveight":
+		if (f) {
+			value = "5"
+		} else {
+			value = "8"
+		}
+	case "nineight":
+		if (f) {
+			value = "9"
+		} else {
+			value = "8"
+		}
+	case "sevenine":
+		if (f) {
+			value = "7"
+		} else {
+			value = "9"
+		}
 	case "one":
 		value = "1"
 	case "two":
@@ -68,8 +104,8 @@ func processStructure(structure []string) {
 		last := foundNumbers[len(foundNumbers)-1]
 		fmt.Print(foundNumbers)
 		fmt.Print(" - First: "+first+" - Last: "+last+" - ")
-		firstValue := convertToInt(first)
-		lastValue := convertToInt(last)
+		firstValue := convertToInt(first,true)
+		lastValue := convertToInt(last,false)
 		resultString := firstValue+lastValue
 		fmt.Print(resultString)
 		resultValue,err := strconv.Atoi(resultString)
