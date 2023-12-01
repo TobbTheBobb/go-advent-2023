@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-var re = regexp.MustCompile(`oneight|threeight|fiveight|nineight|sevenine|twone|one|two|three|four|five|six|seven|eight|nine|\d`)
+var re = regexp.MustCompile(`eighthree|eightwo|oneight|threeight|fiveight|nineight|sevenine|twone|one|two|three|four|five|six|seven|eight|nine|\d`)
 
 func main() {
 	myInput_Structure := readFile()
@@ -35,6 +35,18 @@ func readFile() []string {
 func convertToInt(s string,f bool) string {
 	var value string
 	switch s {
+	case "eighthree":
+		if (f) {
+			value = "8"
+		} else {
+			value = "3"
+		}
+	case "eightwo":
+		if (f) {
+			value = "8"
+		} else {
+			value = "2"
+		}
 	case "twone":
 		if (f) {
 			value = "2"
