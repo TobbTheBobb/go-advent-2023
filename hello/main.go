@@ -1,10 +1,8 @@
-package main
+package hello
 
 import "fmt"
 
-var peter string
-
-func main() {
+func Hello() {
 	peter := "doch nicht PETER MUHAHAHA!!"
 	fmt.Printf("Hello World! My name is %s\n", peter)
 }
