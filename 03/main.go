@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-	"github.com/tobbthebobb/go-advent-2023/hello"
+	//"github.com/fatih/color"
 )
 
 var reDigit = regexp.MustCompile(`(?:\d+)+`)
@@ -33,36 +33,56 @@ func readFile() []string {
 	return myInput_Structure
 }
 
-
-func doMatch(d []string) int {
-	//fmt.Println("MATCH!")
-	//fmt.Println(d[0])
-	value,err := strconv.Atoi(d[0])
-	check(err)
-	return value
+func checkMatch(content string,left int, right int) bool {
+	if left < 0 {
+		left = 0
+	}
+	if right >= len(content) {
+		right = len(content)-1
+	}
+	return reNoDot.MatchString(content[left:right+1])
 }
 
 func solveTask1(lines []string) int {
 	sum := 0
-	for _, content := range lines {
+	for l, content := range lines {
 		fmt.Println(content)
-		digits := reDigit.FindAllStringSubmatch(content,-1)
-		indexDigits := reDigit.FindAllStringSubmatchIndex(content,-1)
-		indexNoDot := reNoDot.FindAllStringSubmatchIndex(content,-1)
-		for c,d := range digits {
+		digits := reDigit.FindAllString(content,-1)
+		indexDigits := reDigit.FindAllStringIndex(content,-1)
+		for count,digit := range digits {
 			matched := false
-			for _,n := range indexNoDot {
-				if ((n[0]==indexDigits[c][1] || n[1]==indexDigits[c][0]) && !matched){
-					//fmt.Println(indexDigits[c])
-					//fmt.Println(n)
-					fmt.Println("Matched in same line. "+(digits[c][0]))
-					sum = sum + doMatch(d)
+			var leftValue,rightValue string
+			left := indexDigits[count][0]-1
+			right := indexDigits[count][1]+1
+			if left >= 0 {
+				leftValue = content[left:left]
+				if reNoDot.MatchString(leftValue) {
+					fmt.Println(leftValue)
 					matched = true
 				}
 			}
+			if right < len(content) && !matched {
+				rightValue = content[right:right+1]
+				if reNoDot.MatchString(rightValue) {
+					fmt.Println(rightValue)
+					matched = true
+				}
+			}
+			if l > 0 && !matched {
+				content = lines[l-1]
+				matched = checkMatch(content,left,right)
+			}
+			if l < len(lines) && !matched {
+				content = lines[l]
+				matched = checkMatch(content,left,right)
+			}
+			if matched {
+				value,err := strconv.Atoi(digit)
+				check(err)
+				sum = sum + value
+				fmt.Printf("digit: %v MATCHED: %v\n", digit,matched)
+			}
 		}
 	}
-	//fmt.Println(sum)
-	//(\d+)[^.\d\n](\d+)?|(\d+)?[^.\d\n](\d+)
 	return sum
 }
