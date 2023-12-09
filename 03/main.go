@@ -6,15 +6,14 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-	//"github.com/fatih/color"
 )
 
 var reDigit = regexp.MustCompile(`(?:\d+)+`)
-var reNoDot = regexp.MustCompile(`[^.\d\n]`)
+var reNoDot = regexp.MustCompile(`[^.\d]`)
 
 func main() {
 	myInput_Structure := readFile()
-	fmt.Printf("%#v\n", myInput_Structure)
+	//fmt.Printf("%#v\n", myInput_Structure)
 	erg := solveTask1(myInput_Structure)
 	fmt.Println(erg)
 }
@@ -33,54 +32,61 @@ func readFile() []string {
 	return myInput_Structure
 }
 
-func checkMatch(content string,left int, right int) bool {
+func checkMatch(str string,left int, right int) bool {
 	if left < 0 {
 		left = 0
 	}
-	if right >= len(content) {
-		right = len(content)-1
+	if right >= len(str) {
+		right = len(str)-1
 	}
-	return reNoDot.MatchString(content[left:right+1])
+	//fmt.Println(str[left:right+1])
+	return reNoDot.MatchString(str[left:right+1])
 }
 
 func solveTask1(lines []string) int {
 	sum := 0
 	for l, content := range lines {
+		if l > 0 {
+			fmt.Println(lines[l-1])
+		}
 		fmt.Println(content)
+		if l < len(lines)-1 {
+			fmt.Println(lines[l+1])
+		}
 		digits := reDigit.FindAllString(content,-1)
 		indexDigits := reDigit.FindAllStringIndex(content,-1)
 		for count,digit := range digits {
 			matched := false
 			var leftValue,rightValue string
 			left := indexDigits[count][0]-1
-			right := indexDigits[count][1]+1
+			right := indexDigits[count][1]
 			if left >= 0 {
-				leftValue = content[left:left]
+				leftValue = content[left:left+1]
 				if reNoDot.MatchString(leftValue) {
-					fmt.Println(leftValue)
+					//fmt.Println(leftValue)
 					matched = true
 				}
 			}
 			if right < len(content) && !matched {
 				rightValue = content[right:right+1]
 				if reNoDot.MatchString(rightValue) {
-					fmt.Println(rightValue)
+					//fmt.Println(rightValue)
 					matched = true
 				}
 			}
 			if l > 0 && !matched {
-				content = lines[l-1]
-				matched = checkMatch(content,left,right)
+				contentb := lines[l-1]
+				matched = checkMatch(contentb,left,right)
 			}
-			if l < len(lines) && !matched {
-				content = lines[l]
-				matched = checkMatch(content,left,right)
+			if l < len(lines)-2 && !matched {
+				contentn := lines[l+1]
+				matched = checkMatch(contentn,left,right)
 			}
 			if matched {
 				value,err := strconv.Atoi(digit)
 				check(err)
 				sum = sum + value
-				fmt.Printf("digit: %v MATCHED: %v\n", digit,matched)
+				fmt.Printf("%v MATCHED: %v\n", digit,matched)
 			}
 		}
 	}
