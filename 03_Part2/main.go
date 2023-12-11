@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
-	"strconv"
+	//"strconv"
 	"strings"
 )
 
@@ -82,9 +82,9 @@ func solveTask1(lines []string) int {
 				matched = checkMatch(contentn,left,right)
 			}
 			if matched {
-				value,err := strconv.Atoi(ratio)
-				check(err)
-				sum = sum + value
+				// value,err := strconv.Atoi(ratio)
+				// check(err)
+				// sum = sum + value
 				fmt.Printf("%v MATCHED: %v\n", ratio,matched)
 			}
 		}
